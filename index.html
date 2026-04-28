@@ -21,7 +21,8 @@
     <script>
         async function llamarAPI() {
     try {
-        const response = await fetch('https://mi-proyecto-paec.onrender.com/');
+        // Asegúrate de que termine en / y no tenga los puntos (...)
+        const response = await fetch('https://mi-proyecto-paec-tu-codigo.onrender.com/');
         const resultado = await response.json();
         const contenedor = document.getElementById('respuesta');
 
