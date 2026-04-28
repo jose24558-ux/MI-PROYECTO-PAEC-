@@ -1,14 +1,14 @@
 const http = require('http');
 const mariadb = require('mariadb');
 
-// Configuración de la conexión
+// Conexión corregida para Render -> Railway
 const pool = mariadb.createPool({
-     host: '127.0.0.1', 
-     port: 3307,        
-     user: 'geo_dev',   
-     password: '',      
-     database: 'test',  
-     connectionLimit: 5
+     host: 'switchback.proxy.rlwy.net', 
+     user: 'root', 
+     password: 'GNTTcpsuIMgNJGKIbFwlA0ANTKseHMrr',
+     port: 27998, 
+     database: 'railway',
+     connectTimeout: 40000
 });
 
 const servidor = http.createServer(async (req, res) => {
@@ -19,26 +19,17 @@ const servidor = http.createServer(async (req, res) => {
 
     let conn;
     try {
-        console.log("Intentando obtener conexión...");
         conn = await pool.getConnection();
-        console.log("Conexión obtenida. Consultando tabla usuarios...");
-        
-        // Consultamos la tabla que creaste en HeidiSQL
         const filas = await conn.query("SELECT * FROM usuarios");
-        
-        res.end(JSON.stringify({ 
-            status: "OK", 
-            datos: filas 
-        }));
-        
+        res.end(JSON.stringify({ status: "OK", datos: filas }));
     } catch (err) {
-        console.log("Error detallado:", err);
         res.end(JSON.stringify({ status: "Error", detalle: err.message }));
     } finally {
-        if (conn) conn.release(); // Muy importante liberar la conexión
+        if (conn) conn.release(); 
     }
 });
 
-servidor.listen(3000, () => {
-    console.log(">>> SERVIDOR ACTIVO EN http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+servidor.listen(PORT, () => {
+    console.log(`>>> SERVIDOR FUNCIONANDO EN PUERTO ${PORT}`);
 });
