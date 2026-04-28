@@ -8,7 +8,9 @@ const pool = mariadb.createPool({
      password: 'GNTTcpsuIMgNJGKIbFwlA0ANTKseHMrr',
      port: 27998, 
      database: 'railway',
-     connectTimeout: 40000
+     connectionLimit: 10,      // Aumentamos el límite de conexiones
+     acquireTimeout: 60000,    // Esperar hasta 60 segundos para conectar
+     connectTimeout: 60000
 });
 
 const servidor = http.createServer(async (req, res) => {
