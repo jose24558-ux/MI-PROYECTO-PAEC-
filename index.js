@@ -5,12 +5,11 @@ const mariadb = require('mariadb');
 const pool = mariadb.createPool({
      host: 'switchback.proxy.rlwy.net', 
      user: 'root', 
-     password: 'GNTTcpsuIMgNJGKIbFwlA0ANTKseHMrr',
-     port: 27998, 
+     password: 'GNTTcpsuIMgNJGKIbFwlA0ANTKseHMrr', // Tu contraseña de Railway
+     port: 3306,                                   // <--- CAMBIA ESTE NÚMERO A 3306
      database: 'railway',
-     connectionLimit: 10,      // Aumentamos el límite de conexiones
-     acquireTimeout: 60000,    // Esperar hasta 60 segundos para conectar
-     connectTimeout: 60000
+     connectionLimit: 5,
+     allowPublicKeyRetrieval: true
 });
 
 const servidor = http.createServer(async (req, res) => {
