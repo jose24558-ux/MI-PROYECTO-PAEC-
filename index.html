@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Primera API</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background-color: #f0f2f5; }
+        .tarjeta { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <div class="tarjeta">
+        <h1>Conexión con la API</h1>
+        <p id="respuesta">Esperando datos...</p>
+        <button onclick="llamarAPI()">Consultar API</button>
+    </div>
+
+    <script>
+        async function llamarAPI() {
+    try {
+        const response = await fetch('http://127.0.0.1:3000');
+        const resultado = await response.json();
+        const contenedor = document.getElementById('respuesta');
+
+        if(resultado.status === "OK") {
+            // Limpiamos y preparamos el título
+            contenedor.innerHTML = "<h3>Lista de Usuarios:</h3>";
+            
+            // Usamos un bucle para mostrar a todos los usuarios de la tabla
+            resultado.datos.forEach(user => {
+                contenedor.innerHTML += `
+                    <div style="border: 1px solid #ccc; margin: 5px; padding: 5px;">
+                        <b>Nombre:</b> ${user.nombre} <br>
+                        <b>Email:</b> ${user.email}
+                    </div>`;
+            });
+        }
+    } catch (error) {
+        document.getElementById('respuesta').innerText = "Error al leer la tabla";
+    }
+}
+    
+    </script>
+</body>
+</html>
